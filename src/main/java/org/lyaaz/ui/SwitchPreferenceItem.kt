@@ -1,6 +1,7 @@
 package org.lyaaz.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -18,13 +19,20 @@ fun SwitchPreferenceItem(
     @StringRes summary: Int? = null,
     checked: Boolean,
     enabled: Boolean = true,
-    onCheckedChange: (Boolean) -> Unit,
+    onCheckedChange: (Boolean) -> Unit = {},
+    onClick: (() -> Unit)? = null,
     noSwitch: Boolean = false
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onCheckedChange(!checked) }
+            .clickable {
+                if (onClick != null) {
+                    onClick()
+                } else if (!noSwitch) {
+                    onCheckedChange(!checked)
+                }
+            }
             .padding(vertical = 8.dp, horizontal = 16.dp)
     ) {
         Row(
@@ -48,6 +56,16 @@ fun SwitchPreferenceItem(
                 }
             }
             if (!noSwitch) {
+                if (onClick != null) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(1.dp)
+                            .height(24.dp)
+                            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
                 Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
             }
         }
