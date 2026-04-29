@@ -36,7 +36,7 @@ fun SwitchPreferenceItem(
             .padding(vertical = 8.dp, horizontal = 16.dp)
     ) {
         Row(
-            modifier = Modifier
+            modifier = Modifier.minimumInteractiveComponentSize()
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
