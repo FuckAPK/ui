@@ -261,6 +261,10 @@ fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
+    // Some modules want the status bar painted with the theme background. It used to be a
+    // copy of this whole file; keep it opt-in so the behaviour of the other modules does not
+    // change.
+    applyStatusBarColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -279,6 +283,10 @@ fun AppTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
+            if (applyStatusBarColor) {
+                @Suppress("DEPRECATION")
+                window.statusBarColor = colorScheme.background.toArgb()
+            }
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
