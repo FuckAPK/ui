@@ -1,7 +1,37 @@
-.gradle/
-/build/
+# Build output
 build/
+.gradle/
 .kotlin/
-.idea/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Signing material - never commit these
+*.jks
+*.keystore
+keystore.jks
+signing.properties
+
+# Machine local configuration
 local.properties
+
+# IDE state. Formatting and whitespace rules live in .editorconfig instead, so nothing
+# under .idea/ needs to be shared.
+.idea/
 *.iml
+*.iws
+*.ipr
+
+# Logs and misc
+*.log
+*.db
+hs_err_pid*
+.DS_Store
