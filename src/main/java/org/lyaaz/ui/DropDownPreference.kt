@@ -20,18 +20,22 @@ fun DropDownPreference(
     @StringRes selected: Int,
     content: @Composable ColumnScope.(onItemSelected: () -> Unit) -> Unit
 ) {
-    var expended by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 16.dp)
-            .height(50.dp)
-            .clickable { expended = true }) {
+            .heightIn(min = 56.dp)
+            .clickable(enabled = enabled) { expanded = true }) {
         Row(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 16.dp)
+            ) {
                 Text(
                     text = stringResource(id = title),
                     style = MaterialTheme.typography.titleMedium,
@@ -54,11 +58,11 @@ fun DropDownPreference(
                     color = MaterialTheme.colorScheme.primary.copy(if (enabled) 1.0f else 0.6f)
                 )
                 DropdownMenu(
-                    expanded = expended,
-                    onDismissRequest = { expended = false },
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
                 ) {
                     if (enabled) {
-                        content { expended = false }
+                        content { expanded = false }
                     }
                 }
             }

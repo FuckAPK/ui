@@ -27,7 +27,7 @@ fun SwitchPreferenceItem(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
+            .clickable(enabled = enabled) {
                 if (onClick != null) {
                     onClick()
                 } else if (!noSwitch) {

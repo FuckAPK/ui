@@ -3,6 +3,8 @@
 package org.lyaaz.ui.theme
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
@@ -256,6 +258,12 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -282,12 +290,14 @@ fun AppTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            if (applyStatusBarColor) {
-                @Suppress("DEPRECATION")
-                window.statusBarColor = colorScheme.background.toArgb()
+            val window = view.context.findActivity()?.window
+            if (window != null) {
+                if (applyStatusBarColor) {
+                    @Suppress("DEPRECATION")
+                    window.statusBarColor = colorScheme.background.toArgb()
+                }
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
             }
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
